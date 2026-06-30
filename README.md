@@ -99,7 +99,7 @@ Then run the loop on that contract. Manual setup:
    ```bash
    ./scripts/harness.sh docs/sprints/<feature>.md
    ```
-   (Requires a coding-agent CLI; built around Claude Code's `claude` CLI — adapt to your agent.)
+   (The `scripts/` automation needs a coding-agent CLI; it's built around Claude Code's `claude`. The manual generate / evaluate / fix loop works in any agent, including Claude Desktop; only the automation requires a CLI.)
 
 Or run it by hand: prompt your agent to **generate** against the contract, then in a **fresh context** prompt it to **evaluate** against `docs/harness.md` + `workflows/code-review.md`, then **fix** the list.
 
