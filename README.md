@@ -1,6 +1,6 @@
 # Agent Development Harness
 
-A practical **generate → evaluate → fix** harness for building software reliably with AI coding agents. You write a short *sprint contract*, the agent builds against it, a fresh-context evaluator checks it against explicit criteria, and the loop repeats until it passes — with the review depth scaled to the risk of the change.
+**Loop engineering for AI coding agents.** The unit of work isn't a prompt, it's a *loop*: **generate → evaluate → fix**, repeated until the change clears an explicit bar. You write a short *sprint contract*, the agent builds against it, a fresh-context evaluator checks it, and the loop iterates, with its depth scaled to the risk of the change.
 
 > **Built on the Generator-Evaluator pattern from Anthropic's [_Harness design for long-running agents_](https://www.anthropic.com/engineering/harness-design-long-running-apps).** The architecture and the "separate the critic from the creator" (GAN-style) insight are theirs. This repo is my own concrete, language-agnostic implementation of it: the sprint-contract format, the tiered evaluation model, the evaluator passes, and the automation.
 
@@ -9,6 +9,16 @@ A practical **generate → evaluate → fix** harness for building software reli
 This is generalized from a harness I built and used to ship a real production app with coding agents. The stack-specific pieces have been abstracted out so it works for any language or framework; the methodology is exactly what I run.
 
 ---
+
+## Loop engineering
+
+The mindset this encodes: stop optimizing single prompts, start engineering the *loop*. The harness is that loop made explicit, instrumented, and tunable.
+
+- **Design the loop** — generate → evaluate → fix, with the evaluator in a *fresh context* so it stays a skeptic instead of rubber-stamping its own work.
+- **Bound the loop** — 3 iterations max. If it isn't converging, the sprint contract is underspecified; fix the contract, not the loop.
+- **Scale loop depth to risk** — the three tiers below are really three loop depths: no loop (direct build), inline loop (self-review), full loop (separate evaluator).
+- **Close the loop** — `unify` reconciles plan vs. actual and logs the decisions made along the way, so nothing dangles.
+- **Evolve the loop** — review it periodically. As the model internalizes the bar, the loop should get *lighter*, not heavier.
 
 ## The core loop
 
