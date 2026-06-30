@@ -1,6 +1,6 @@
 # Agent Development Harness
 
-**Loop engineering for AI coding agents.** The unit of work isn't a prompt, it's a *loop*: **generate → evaluate → fix**, repeated until the change clears an explicit bar. You write a short *sprint contract*, the agent builds against it, a fresh-context evaluator checks it, and the loop iterates, with its depth scaled to the risk of the change.
+**Loop engineering for AI coding agents.** The unit of work isn't a prompt, it's a *loop*: **generate → evaluate → fix**, repeated until the change clears an explicit bar. You write the *intent*; the harness drafts and sharpens the sprint contract from it, the agent builds against that, a fresh-context evaluator checks the work, and the loop iterates. A **risk gate** at the end decides whether a human needs to review before merge, so the depth of *your* involvement scales to the risk of the change.
 
 > **Built on the Generator-Evaluator pattern from Anthropic's [_Harness design for long-running agents_](https://www.anthropic.com/engineering/harness-design-long-running-apps).** The architecture and the "separate the critic from the creator" (GAN-style) insight are theirs. This repo is my own concrete, language-agnostic implementation of it: the sprint-contract format, the tiered evaluation model, the evaluator passes, and the automation.
 
@@ -27,8 +27,11 @@ The mindset this encodes: stop optimizing single prompts, start engineering the 
 ## The core loop
 
 ```
-Sprint Contract (you write)
+Intent (you write — a sentence or two on what you want)
        │
+       ▼
+  PLAN-REVIEW (automated) ──→ drafts & sharpens the Sprint Contract
+       │                       scope · testable behaviors · failure modes · not-in-scope
        ▼
    GENERATE ──→ code + BUILD_SUMMARY
        │
@@ -41,8 +44,15 @@ Sprint Contract (you write)
       yes                   └──→ back to GENERATE (max 3 iterations)
        │
        ▼
-  you review → merge → CI
+  RISK GATE ──→ does this change need a human?
+       │
+   ├── low risk  (Tier 1–2) ──────────────────→ merge → CI
+   │
+   └── high risk (Tier 3: architecture, new
+         patterns, data migrations) ──────────→ flag for your review → merge → CI
 ```
+
+The only thing you hand-write is the **intent**. The harness drafts the contract, builds, evaluates, and fixes on its own, and only pulls you in when the risk gate says a human is warranted.
 
 The key idea (from the Anthropic article): the same model is a better critic when asked *only* to criticize, in a fresh context, than when asked to generate and self-evaluate at once. So evaluation runs as a separate pass.
 

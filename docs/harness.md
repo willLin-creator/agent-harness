@@ -45,7 +45,13 @@ You use **your IDE + coding agent** (e.g. a coding-agent CLI such as Claude Code
 ## Architecture
 
 ```
-  Sprint Contract (you write)
+  Intent (you write — a sentence or two)
+         │
+         ▼
+  ┌──────────────┐
+  │ PLAN-REVIEW  │──→ drafts & sharpens the Sprint Contract
+  │ (automated)  │
+  └──────┬───────┘
          │
          ▼
   ┌──────────────┐
@@ -60,23 +66,23 @@ You use **your IDE + coding agent** (e.g. a coding-agent CLI such as Claude Code
   └──────┬───────┘
          │
     ┌────┴────┐
-    │ Issues? │
+    │ Issues? │── Yes ─→ "Fix these: [fix list]" ─→ back to GENERATE (max 3)
     └────┬────┘
-     Yes │ No
-      │    └─→ You review → Merge → CI → Deploy
-      ▼
-  "Fix these: [fix list]"
-      │
-      └─→ back to GENERATE
+       No │
+         ▼
+  ┌──────────────┐
+  │  RISK GATE   │── low risk ───→ Merge → CI
+  │ (risk tier)  │── high risk ──→ flag for your review → Merge → CI
+  └──────────────┘
 ```
 
 ## Roles
 
 ### Planner (You)
 
-- Writes sprint contracts before each feature
+- Writes the *intent* for each feature (a sentence or two); reviews and approves the sprint contract the harness drafts from it
 - Makes architecture decisions when the evaluator flags tradeoffs
-- Reviews final output and approves merge
+- Reviews final output when the risk gate flags it (low-risk changes can merge without a deep review)
 - Owns product judgment — "does this feel right for the user?"
 
 ### Generator (Coding Agent — generate prompt)
@@ -94,6 +100,14 @@ You use **your IDE + coding agent** (e.g. a coding-agent CLI such as Claude Code
 - Never generates new features — only evaluates and identifies gaps
 
 ### Quick-Reference Prompts
+
+**Plan (draft the contract from intent):**
+```
+Here's my intent: [one or two sentences on what you want].
+Run the plan-review workflow (workflows/plan-review.md) to turn it into a
+sprint contract at docs/sprints/[feature].md: scope challenge, testable
+behaviors, failure modes, and what's not in scope. Show me the contract.
+```
 
 **Generate:**
 ```
@@ -402,10 +416,11 @@ A user can see their assigned tasks grouped by category, with an action bar to a
 
 All in one coding-agent session inside your IDE.
 
-### Step 1: Write Sprint Contract (You)
+### Step 1: Write the Intent, Let the Harness Draft the Contract (You + Plan-Review)
 
-1. Create `docs/sprints/[feature-slug].md` using the template above
-2. Fill in: goal, files, testable behaviors, constraints, exclusions
+1. Write your *intent* — a sentence or two on what you want.
+2. Run the plan-review workflow (`workflows/plan-review.md`) to turn that intent into a sprint contract at `docs/sprints/[feature-slug].md`: scope challenge, testable behaviors with Verify steps, failure modes, and what's not in scope.
+3. Review and approve the drafted contract. This is the one place your judgment shapes the loop; everything downstream runs against it. (See "The Front of the Loop" above.)
 
 ### Step 2: Generate (Prompt the Coding Agent)
 
@@ -462,13 +477,17 @@ Update docs/sprints/[feature-slug]-BUILD_SUMMARY.md with fixes.
 
 Then re-evaluate (Step 3). Max 3 iterations.
 
-### Step 5: Merge
+### Step 5: Risk Gate, then Merge
 
-When the evaluator outputs APPROVED:
-1. You review the diff (your judgment on UX, product fit)
-2. Merge to main
-3. CI runs automatically
-4. Tag for deploy when ready
+When the evaluator outputs APPROVED, the risk tier decides whether a human is needed before merge. This is the same risk tiering that sets evaluation depth, now applied to the human-in-the-loop decision: your attention is spent only where the risk warrants it.
+
+- **Low risk (Tier 1-2)** — bug fixes, standard features within established patterns. The automated checks plus the evaluator pass are sufficient; it can merge without a deep human review.
+- **High risk (Tier 3)** — architecture changes, new patterns, data migrations, anything other work will copy. The harness flags it for *your* review before merge: you check the diff for UX, product fit, and architectural consequence.
+
+1. Risk gate classifies the change (see Evaluation Tiers).
+2. High risk → you review the diff; low risk → proceed.
+3. Merge to main; CI runs automatically.
+4. Tag for deploy when ready.
 
 ---
 
