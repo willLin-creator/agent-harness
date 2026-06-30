@@ -82,6 +82,12 @@ scripts/
 
 ## Quick start
 
+**Fastest start (Claude Code or any agent).** Clone the repo and paste:
+
+> Read docs/harness.md and the workflows/ folder, then set this harness up for my project. Ask me my lint, test, and format commands and the one architectural rule my codebase can't break, and save them. Confirm you understand the generate → evaluate → fix loop. Then ask me for an intent for a small first feature and draft a sprint contract from it using workflows/plan-review.md.
+
+Then run the loop on that contract. Manual setup:
+
 1. Set your stack's commands (the harness is language-agnostic):
    ```bash
    export LINT_CMD="<your linter, zero warnings>"   # e.g. eslint . / ruff check / flutter analyze
