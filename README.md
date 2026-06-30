@@ -4,6 +4,29 @@
 
 > **Built on the Generator-Evaluator pattern from Anthropic's [_Harness design for long-running agents_](https://www.anthropic.com/engineering/harness-design-long-running-apps).** The architecture and the "separate the critic from the creator" (GAN-style) insight are theirs. This repo is my own concrete, language-agnostic implementation of it: the sprint-contract format, the tiered evaluation model, the evaluator passes, and the automation.
 
+## Quick Start
+
+**Fastest start (Claude Code).** Point it at the repo:
+
+> Hey Claude, I want to start using https://github.com/willLin-creator/agent-harness. Set it up for my project.
+
+Claude reads `docs/harness.md` + `workflows/`, asks for your lint/test/format commands and your one core architecture rule, saves them, and drafts your first sprint contract from an intent you give it. Manual setup:
+
+1. Set your stack's commands (the harness is language-agnostic):
+   ```bash
+   export LINT_CMD="<your linter, zero warnings>"   # e.g. eslint . / ruff check / flutter analyze
+   export TEST_CMD="<your test runner>"
+   export FORMAT_CMD="<your formatter --check>"
+   ```
+2. Write a sprint contract in `docs/sprints/<feature>.md` (template in `docs/harness.md`).
+3. Run the loop:
+   ```bash
+   ./scripts/harness.sh docs/sprints/<feature>.md
+   ```
+   (The `scripts/` automation needs a coding-agent CLI; it's built around Claude Code's `claude`. The manual generate / evaluate / fix loop works in any agent, including Claude Desktop; only the automation requires a CLI.)
+
+Or run it by hand: prompt your agent to **generate** against the contract, then in a **fresh context** prompt it to **evaluate** against `docs/harness.md` + `workflows/code-review.md`, then **fix** the list.
+
 ## Background
 
 This is the product of months of real work. I built and refined this harness while shipping a production app with coding agents, iterating on it until I trusted it to drive real engineering. I'm open-sourcing it now that I'm confident in what it does.
@@ -79,29 +102,6 @@ scripts/
   harness.sh             # automated generate→evaluate→fix loop (one sprint)
   run-all-sprints.sh     # run multiple sprint contracts in parallel on branches
 ```
-
-## Quick start
-
-**Fastest start (Claude Code).** Point it at the repo:
-
-> Hey Claude, I want to start using https://github.com/willLin-creator/agent-harness. Set it up for my project.
-
-Claude reads `docs/harness.md` + `workflows/`, asks for your lint/test/format commands and your one core architecture rule, saves them, and drafts your first sprint contract from an intent you give it. Manual setup:
-
-1. Set your stack's commands (the harness is language-agnostic):
-   ```bash
-   export LINT_CMD="<your linter, zero warnings>"   # e.g. eslint . / ruff check / flutter analyze
-   export TEST_CMD="<your test runner>"
-   export FORMAT_CMD="<your formatter --check>"
-   ```
-2. Write a sprint contract in `docs/sprints/<feature>.md` (template in `docs/harness.md`).
-3. Run the loop:
-   ```bash
-   ./scripts/harness.sh docs/sprints/<feature>.md
-   ```
-   (The `scripts/` automation needs a coding-agent CLI; it's built around Claude Code's `claude`. The manual generate / evaluate / fix loop works in any agent, including Claude Desktop; only the automation requires a CLI.)
-
-Or run it by hand: prompt your agent to **generate** against the contract, then in a **fresh context** prompt it to **evaluate** against `docs/harness.md` + `workflows/code-review.md`, then **fix** the list.
 
 ## Credits
 
