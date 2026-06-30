@@ -6,7 +6,9 @@
 
 ## Background
 
-This is generalized from a harness I built and used to ship a real production app with coding agents. The stack-specific pieces have been abstracted out so it works for any language or framework; the methodology is exactly what I run.
+This is the product of months of real work. I built and refined this harness while shipping a production app with coding agents, iterating on it until I trusted it to drive real engineering. I'm open-sourcing it now that I'm confident in what it does.
+
+The public repository is a fresh extraction, with the stack-specific pieces abstracted out so it works for any language or framework, which is why its commit history is recent. **The harness it's distilled from is not new**, and the methodology here is exactly what I run.
 
 ---
 
