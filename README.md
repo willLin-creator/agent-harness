@@ -16,6 +16,8 @@ The public repository is a fresh extraction, with the stack-specific pieces abst
 
 The mindset this encodes: stop optimizing single prompts, start engineering the *loop*. The harness is that loop made explicit, instrumented, and tunable.
 
+**The front of the loop is sprint quality.** `workflows/plan-review.md` turns intent into a tight sprint contract before any code is generated: a vague contract guarantees re-loops, a sharp one converges in one pass. (See "The Front of the Loop" in `docs/harness.md`.)
+
 - **Design the loop** — generate → evaluate → fix, with the evaluator in a *fresh context* so it stays a skeptic instead of rubber-stamping its own work.
 - **Bound the loop** — 3 iterations max. If it isn't converging, the sprint contract is underspecified; fix the contract, not the loop.
 - **Scale loop depth to risk** — the three tiers below are really three loop depths: no loop (direct build), inline loop (self-review), full loop (separate evaluator).

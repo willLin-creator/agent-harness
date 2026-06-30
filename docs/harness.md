@@ -118,6 +118,27 @@ Update BUILD_SUMMARY.md with what was fixed.
 
 ---
 
+## The Front of the Loop: Intent to a Quality Sprint Contract
+
+The loop's output quality is set *before* generation starts. A vague contract guarantees iterations; a sharp one usually converges in a single pass. So the front of the loop is a real step, not a formality, and it's where you declare intent.
+
+Run `workflows/plan-review.md` to turn intent into the contract:
+
+1. **Declare and pressure-test intent (Step 0, Scope Challenge):** the minimum change that achieves the goal, what already exists (so you don't rebuild), an architecture gate that rejects plans violating your core invariant, and an explicit scope tier with a SCOPE REDUCTION option. Intent isn't just stated, it's challenged.
+2. **The plan-review outputs _are_ the sprint contract.** They map directly:
+
+| plan-review output | sprint contract field |
+|---|---|
+| Testable behaviors with observable Verify steps | Testable Behaviors |
+| "NOT in scope" | Not in This Sprint |
+| "What already exists" | informs Files; prevents rebuild |
+| Failure modes + CRITICAL GAPs | Architecture Constraints / behaviors |
+| Per-codepath test coverage | Testable Behaviors / Acceptance |
+
+This closes the loop in both directions. If you skip the front-of-loop work and the loop runs 3+ times, that *is* the signal the contract was underspecified. And when `workflows/debug.md` classifies a failure as **Intent** or **Spec** (not Code), it points right back here: re-plan the contract, don't patch the code. Same discipline, front and back.
+
+---
+
 ## Sprint Contract Template
 
 Before the generator starts any feature, create a sprint contract. This is the "negotiated agreement" between planner, generator, and evaluator.
