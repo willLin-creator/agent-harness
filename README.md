@@ -82,11 +82,11 @@ scripts/
 
 ## Quick start
 
-**Fastest start (Claude Code or any agent).** Clone the repo and paste:
+**Fastest start (Claude Code).** Point it at the repo:
 
-> Read docs/harness.md and the workflows/ folder, then set this harness up for my project. Ask me my lint, test, and format commands and the one architectural rule my codebase can't break, and save them. Confirm you understand the generate → evaluate → fix loop. Then ask me for an intent for a small first feature and draft a sprint contract from it using workflows/plan-review.md.
+> Hey Claude, I want to start using https://github.com/willLin-creator/agent-harness. Set it up for my project.
 
-Then run the loop on that contract. Manual setup:
+Claude reads `docs/harness.md` + `workflows/`, asks for your lint/test/format commands and your one core architecture rule, saves them, and drafts your first sprint contract from an intent you give it. Manual setup:
 
 1. Set your stack's commands (the harness is language-agnostic):
    ```bash
