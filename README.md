@@ -103,6 +103,8 @@ scripts/
   run-all-sprints.sh     # run multiple sprint contracts in parallel on branches
 ```
 
+*Review lenses:* `plan-review.md` here is an engineering-manager review. For product, design, and strategic (CEO-style) reviews of *what* to build, I use gstack's plan-review skills (not included here — they're gstack's).
+
 ## Credits
 
 The Generator-Evaluator harness pattern and the GAN-style critic insight come from Anthropic's [_Harness design for long-running agents_](https://www.anthropic.com/engineering/harness-design-long-running-apps). This repo is an independent implementation of that pattern.

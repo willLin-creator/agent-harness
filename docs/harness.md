@@ -151,6 +151,8 @@ Run `workflows/plan-review.md` to turn intent into the contract:
 
 This closes the loop in both directions. If you skip the front-of-loop work and the loop runs 3+ times, that *is* the signal the contract was underspecified. And when `workflows/debug.md` classifies a failure as **Intent** or **Spec** (not Code), it points right back here: re-plan the contract, don't patch the code. Same discipline, front and back.
 
+**Review lenses (credit).** This harness ships an *engineering* review lens (`workflows/plan-review.md`) plus code review. For changes that warrant it, I also run **product, design, and strategic (CEO-style) plan reviews** using gstack's `plan-eng-review` / `plan-ceo-review` skills, which are gstack's and not included here. The harness is the build loop; those lenses help decide *what* is worth building, not how to build it reliably.
+
 ---
 
 ## Sprint Contract Template
