@@ -1,0 +1,21 @@
+# Secrets — never commit
+*token*.json
+*cred*.json
+*secret*
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+
+# Harness run artifacts (generated per sprint)
+*-BUILD_SUMMARY.md
+*-EVAL_RESULT.md
+*-harness.log
+
+# OS / tooling
+.DS_Store
+__pycache__/
+*.pyc
+.venv/
+node_modules/
