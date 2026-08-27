@@ -46,6 +46,7 @@ The mindset this encodes: stop optimizing single prompts, start engineering the 
 - **Scale loop depth to risk** — the three tiers below are really three loop depths: no loop (direct build), inline loop (self-review), full loop (separate evaluator).
 - **Close the loop** — `unify` reconciles plan vs. actual and logs the decisions made along the way, so nothing dangles.
 - **Evolve the loop** — review it periodically. As the model internalizes the bar, the loop should get *lighter*, not heavier.
+  How would you know? [`agent-eval-loop`](https://github.com/willLin-creator/agent-eval-loop) is the companion for that: corrections become dated cases, per-rule recurrence becomes a number, and a rule's enforcement tier (hook, pinned, recall) moves in both directions on that evidence. Its `hats/` are the evaluator for work that has no test suite (a spec, a plan), which is the half this repo does not cover.
 
 ## The core loop
 
