@@ -27,11 +27,11 @@ Claude reads `docs/harness.md` + `workflows/`, asks for your lint/test/format co
 
 Or run it by hand: prompt your agent to **generate** against the contract, then in a **fresh context** prompt it to **evaluate** against `docs/harness.md` + `workflows/code-review.md`, then **fix** the list.
 
-## Background
+## Provenance
 
-This is the product of months of real work. I built and refined this harness while shipping a production app with coding agents, iterating on it until I trusted it to drive real engineering. I'm open-sourcing it now that I'm confident in what it does.
+This is a genericized split-out of one piece of a private AI operating system I have built, refined, and relied on daily for **3,000+ hours** of real work: the engineering loop I run when shipping a production app with coding agents, iterated on until I trusted it to drive real engineering. The public repository is a fresh extraction, with the stack-specific pieces abstracted out so it works for any language or framework, which is why its commit history is recent. **The harness it's distilled from is not new**, and the methodology here is exactly what I run.
 
-The public repository is a fresh extraction, with the stack-specific pieces abstracted out so it works for any language or framework, which is why its commit history is recent. **The harness it's distilled from is not new**, and the methodology here is exactly what I run.
+Sibling extractions from the same system: [ai-chief-of-staff](https://github.com/willLin-creator/ai-chief-of-staff) (the operating system itself), [agent-memory-vault](https://github.com/willLin-creator/agent-memory-vault) (the memory layer), and [agent-eval-loop](https://github.com/willLin-creator/agent-eval-loop) (the evaluator half for work with no test suite, and the loop that scores corrections). Each works alone.
 
 ---
 
